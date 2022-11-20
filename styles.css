@@ -1,0 +1,157 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+/*Criacao de uma variavel para o tamanho de celula*/
+:root {
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * .9);
+}
+
+body {
+    background: linear-gradient(
+        90deg,
+        rgba(141, 66, 245,1) 0%,
+        rgba(32, 161, 247,1) 100%
+        );
+    margin: 0;
+}
+
+.tabuleiro {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, auto);
+}
+
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+    border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+    border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+    border-right: none;
+}
+
+.cell:last-child,
+.cell:nth-child(8),
+.cell:nth-child(7) {
+    border-bottom: none;
+}
+
+.cell.x,
+.cell.circulo {
+    cursor: not-allowed;
+}
+
+.cell.x::before,
+.cell.x::after,
+.cell.circulo::before {
+    background-color: black;
+}
+
+
+.tabuleiro.x .cell:not(.x):not(.circulo):hover::before,
+.tabuleiro.x .cell:not(.x):not(.circulo):hover::after,
+.tabuleiro.circulo .cell:not(.x):not(.circulo):hover::before {
+    background-color: black;
+}
+
+
+/* CELULA X*/
+.cell.x::before,
+.cell.x::after,
+/*Garante que quando o mouuse passa por cima de x ou circulo, nao sobrescreve os efeitos */
+.tabuleiro.x .cell:not(.x):not(.circulo):hover::before, 
+.tabuleiro.x .cell:not(.x):not(.circulo):hover::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+}
+
+.cell.x::before,
+.tabuleiro.x .cell:not(.x):not(.circulo):hover::before {
+    transform: rotate(45deg);
+}
+
+.cell.x::after,
+.tabuleiro.x .cell:not(.x):not(.circulo):hover::after {
+    transform: rotate(-45deg);
+}
+
+/* CELULA CIRCULO*/
+.cell.circulo::before,
+.cell.circulo::after,
+.tabuleiro.circulo .cell:not(.x):not(.circulo):hover::before,
+.tabuleiro.circulo .cell:not(.x):not(.circulo):hover::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.cell.circulo::before,
+.tabuleiro.circulo .cell:not(.x):not(.circulo):hover::before {
+    width: var(--mark-size);
+    height: var(--mark-size);
+}
+
+.cell.circulo::after,
+.tabuleiro.circulo .cell:not(.x):not(.circulo):hover::after {
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: black;
+}
+
+.mensagem-vitoria {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .85);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+    flex-direction: column;
+}
+
+.mensagem-vitoria-botao {
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+}
+
+.mensagem-vitoria-botao:hover{
+    background-color: black;
+    color: white;
+    border-color: white; 
+}
+
+.mensagem-vitoria.mostra {
+    display: flex;
+}
